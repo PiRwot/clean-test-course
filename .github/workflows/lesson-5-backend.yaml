@@ -22,7 +22,8 @@ jobs:
           pip install pytest django_mock_queries six coverage
       - name: Unit Tests
         run: |
-          coverage run -m --source=./hangry_api pytest
+          cd hangry_api
+          python -m coverage run --source=. -m pytest tests/
           coverage report
   deploy:
     needs: [build_and_test]

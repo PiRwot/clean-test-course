@@ -31,7 +31,8 @@ jobs:
           pip install pytest django_mock_queries six coverage
       - name: Unit Tests
         run: |
-          coverage run -m --source=./hangry_api pytest
+          cd hangry_api
+          python -m coverage run --source=. -m pytest tests/
           coverage report
 #The deploy job sets the debug flag in the django settings.py file to false.  We perform this command in the build so that the developer can leave the debug flag as true for development purposes and does not have to change the flag every time they check in code.  After the debug flag is set, we zip the environment up (excluding the directory .git since these are files for source management) and deploy.  Afterwards, we use "configure-aws-credentials" to generate temporary AWS_ACCESS_KEY and AWS_ACCESS_SECRET environment variables.  We use these to deploy to the AWS environment.
   deploy:
@@ -48,9 +49,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Disable Debug
         run: |
-          sed -i 's/DEBUG = True/DEBUG = False/g' hangry_api/hangry_api/settings.py
+          cd hangry_api
+          sed -i 's/DEBUG = True/DEBUG = False/g' hangry_api/settings.py
       - name: Generate deployment package
-        run: zip -r deploy.zip . -x '*.git*'
+        run: |
+          cd hangry_api
+          zip -r ../deploy.zip . -x '*.git*'
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
