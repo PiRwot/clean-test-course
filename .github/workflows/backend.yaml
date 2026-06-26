@@ -37,6 +37,7 @@ jobs:
 #The deploy job sets the debug flag in the django settings.py file to false.  We perform this command in the build so that the developer can leave the debug flag as true for development purposes and does not have to change the flag every time they check in code.  After the debug flag is set, we zip the environment up (excluding the directory .git since these are files for source management) and deploy.  Afterwards, we use "configure-aws-credentials" to generate temporary AWS_ACCESS_KEY and AWS_ACCESS_SECRET environment variables.  We use these to deploy to the AWS environment.
   deploy:
     needs: [build_and_test]
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
