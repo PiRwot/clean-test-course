@@ -12,15 +12,10 @@ jobs:
         working-directory: frontend
     steps:
       - uses: actions/checkout@v4
-      - run: nmp install
-        name: Run funtional tests
-        run: npm test
-        with:
-          python-version: 3.11
       - name: Install dependencies
-        run: pip install -r requirements.txt
-      - name: Run tests
-        run: pytest
+        run: npm install
+      - name: Run functional tests
+        run: npm test
   deploy:
     needs: [function_test]
     runs-on: ubuntu-latest
