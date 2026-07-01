@@ -12,7 +12,7 @@ jobs:
         working-directory: frontend
     steps:
       - uses: actions/checkout@v4
-      - runs: nmp install
+      - run: nmp install
         name: Run funtional tests
         run: npm test
         with:
