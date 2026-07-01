@@ -5,7 +5,24 @@ on:
     branches:
       - lesson-3
 jobs:
+  function_test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - runs: nmp install
+        name: Run funtional tests
+        run: npm test
+        with:
+          python-version: 3.11
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: pytest
   deploy:
+    needs: [function_test]
     runs-on: ubuntu-latest
     defaults:
       run:
